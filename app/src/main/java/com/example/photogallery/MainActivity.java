@@ -192,15 +192,4 @@ public class MainActivity extends AppCompatActivity {
         startActivity(Intent.createChooser(sendIntent,"Send"));
 
     }
-
-    public void shareToSocialMedia(View view) {
-        File photoFile = new File(photos.get(index));
-        Uri photo = FileProvider.getUriForFile(this, "com.example.photogallery", photoFile);
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_STREAM, photo);
-        sendIntent.setType("image/*");
-        startActivity(Intent.createChooser(sendIntent,"Send"));
-
-    }
 }
