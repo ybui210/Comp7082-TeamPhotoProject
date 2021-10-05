@@ -24,6 +24,9 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> findPhotos(Date startTimestamp, Date endTimestamp, String keywords) {
         File file = new File(Environment.getExternalStorageDirectory()
                 .getAbsolutePath(), "/Android/data/com.example.photogallery/files/Pictures");
-
         ArrayList<String> photos = new ArrayList<String>();
         File[] fList = file.listFiles();
         if (fList != null) {
@@ -97,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         ImageView iv = (ImageView) findViewById(R.id.ivGallery);
         TextView tv = (TextView) findViewById(R.id.tvTimestamp);
         EditText et = (EditText) findViewById(R.id.etCaption);
+        mCurrentPhotoPath = path;
         if (path == null || path =="") {
             iv.setImageResource(R.mipmap.ic_launcher);
             et.setText("");
@@ -174,7 +177,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickSearch(View view) {
-        startActivity(new Intent(MainActivity.this, SearchActivity.class));
+        Intent intent = new Intent(this, SearchActivity.class);
+        startActivityForResult(intent, SEARCH_ACTIVITY_REQUEST_CODE);
+
+    }
+
+    public void shareToSocialMedia(View view) {
+        File photoFile = new File(photos.get(index));
+        Uri photo = FileProvider.getUriForFile(this, "com.example.photogallery", photoFile);
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_STREAM, photo);
+        sendIntent.setType("image/*");
+        startActivity(Intent.createChooser(sendIntent,"Send"));
 
     }
 
