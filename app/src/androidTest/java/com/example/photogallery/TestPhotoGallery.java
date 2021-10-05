@@ -3,6 +3,7 @@ package com.example.photogallery;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -24,7 +25,7 @@ public class TestPhotoGallery {
     @Test
     public void secondTestApp(){
         onView(withId(R.id.btnSearch)).perform(click());
-        onView(withId(R.id.etFromDateTime)).perform(typeText(""), closeSoftKeyboard());
+        onView(withId(R.id.etFromDateTime)).perform(replaceText("2021‐09‐01 00:00:00"), closeSoftKeyboard());
         onView(withId(R.id.etToDateTime)).perform(typeText(""), closeSoftKeyboard());
         onView(withId(R.id.etKeywords)).perform(typeText("caption"), closeSoftKeyboard());
         onView(withId(R.id.go)).perform(click());
