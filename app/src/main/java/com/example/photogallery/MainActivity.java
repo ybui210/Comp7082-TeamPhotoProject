@@ -99,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
         ImageView iv = (ImageView) findViewById(R.id.ivGallery);
         TextView tv = (TextView) findViewById(R.id.tvTimestamp);
         EditText et = (EditText) findViewById(R.id.etCaption);
-        mCurrentPhotoPath = path;
         if (path == null || path =="") {
             iv.setImageResource(R.mipmap.ic_launcher);
             et.setText("");
