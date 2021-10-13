@@ -3,10 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/BCITCOMPBA/20201Fall/comp7082-software engineering/Assignments/Github/Comp7082-TeamPhotoProject/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.23229166666666667" />
+        <entry key="..\:/BCITCOMPBA/20201Fall/comp7082-software engineering/Assignments/Github/Comp7082-TeamPhotoProject/app/src/main/res/drawable/ic_launcher_background.xml" value="0.23229166666666667" />
         <entry key="..\:/BCITCOMPBA/20201Fall/comp7082-software engineering/Assignments/Github/Comp7082-TeamPhotoProject/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/BCITCOMPBA/20201Fall/comp7082-software engineering/Assignments/Github/Comp7082-TeamPhotoProject/app/src/main/res/layout/activity_search.xml" value="0.1" />
+        <entry key="..\:/BCITCOMPBA/20201Fall/comp7082-software engineering/Assignments/Github/Comp7082-TeamPhotoProject/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2359375" />
         <entry key="..\:/BCITCOMPBA/20201Fall/comp7082-software engineering/Assignments/Github/Comp7082-TeamPhotoProject/app/src/main/res/xml/file_paths.xml" value="0.1" />
-        <entry key="..\:/Users/Kris/AndroidStudioProjects/Comp7082-TeamPhotoProject/app/src/main/res/layout/activity_main.xml" value="0.21784420289855072" />
       </map>
     </option>
   </component>

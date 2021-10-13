@@ -110,8 +110,50 @@
         android:layout_marginBottom="272dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:minHeight="48dp"
         android:text=""
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck"
         tools:layout_editor_absoluteX="0dp" />
+
+    <TextView
+        android:id="@+id/longTextView"
+        android:layout_width="331dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="300dp"
+        android:layout_marginEnd="55dp"
+        android:ems="9"
+        android:text="Longitude:"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/latiTextView"
+        android:layout_width="322dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="319dp"
+        android:layout_marginEnd="55dp"
+        android:ems="9"
+        android:text="Latidue:"
+        android:textStyle="bold"/>
+
+
+    <Button
+        android:id="@+id/etLocation"
+        android:layout_width="110dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="194dp"
+        android:layout_marginBottom="98dp"
+        android:onClick="onClickLocation"
+        android:text="Location"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnNext"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.786" />
+
 </RelativeLayout>
