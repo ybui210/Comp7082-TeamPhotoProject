@@ -43,7 +43,10 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -89,18 +92,28 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         File file = new File(Environment.getExternalStorageDirectory()
                 .getAbsolutePath(), "/Android/data/com.example.photogallery/files/Pictures");
         ArrayList<String> photos = new ArrayList<String>();
+        List<String> test =  new ArrayList<String>();
         File[] fList = file.listFiles();
         if (fList != null) {
+                Log.i(TAG, "i am here");
+                if(startTimestamp != null && endTimestamp != null){
+                    fList = Arrays.asList(fList).stream().filter(e -> e.lastModified() >= startTimestamp.getTime())
+                            .filter(e -> e.lastModified() <= endTimestamp.getTime()).collect(Collectors.toList()).toArray(new File[0]);
+                }
 
-            for (File f : fList) {
-                if (((startTimestamp == null && endTimestamp == null) || (f.lastModified() >= startTimestamp.getTime()
-                        && f.lastModified() <= endTimestamp.getTime())
-                ) && (keywords == "" || f.getPath().contains(keywords))
-                        && (longitude == "" || f.getPath().contains(longitude))
-                        && (latitude == "" || f.getPath().contains(latitude)))
-                    photos.add(f.getPath());
+                if(keywords != null){
+                    fList =  Arrays.asList(fList).stream().filter(e -> e.getPath().contains(keywords)).collect(Collectors.toList()).toArray(new File[0]);
+                }
+
+                if(longitude != null && latitude != null){
+                    fList = (File[]) Arrays.asList(fList).stream().filter(e -> e.getPath().contains(longitude))
+                            .filter(e -> e.getPath().contains(latitude)).collect(Collectors.toList()).toArray(new File[0]);
+                }
+
+                photos = new ArrayList<String>(Arrays.asList(fList).stream().map(x -> x.getPath()).collect(Collectors.toList()));
+
             }
-        }
+
         return photos;
     }
 
