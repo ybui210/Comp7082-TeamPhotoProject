@@ -266,7 +266,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         properties.x = location.getLatitude();
         properties.y = location.getLongitude();
         Log.d(TAG, "onLocationChanged:" +properties.x);
-        Toast.makeText(this, "findPhotos  "+ properties.x, Toast.LENGTH_SHORT).show();
     }
 
     public void onClickLocation(View view) {
