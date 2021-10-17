@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.nfc.Tag;
 import android.os.Bundle;
 
 import static android.content.ContentValues.TAG;
@@ -96,21 +97,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         File[] fList = file.listFiles();
         if (fList != null) {
                 Log.i(TAG, "i am here");
-                if(startTimestamp != null && endTimestamp != null){
-                    fList = Arrays.asList(fList).stream().filter(e -> e.lastModified() >= startTimestamp.getTime())
-                            .filter(e -> e.lastModified() <= endTimestamp.getTime()).collect(Collectors.toList()).toArray(new File[0]);
-                }
-
-                if(keywords != null){
-                    fList =  Arrays.asList(fList).stream().filter(e -> e.getPath().contains(keywords)).collect(Collectors.toList()).toArray(new File[0]);
-                }
-
-                if(longitude != null && latitude != null){
-                    fList = (File[]) Arrays.asList(fList).stream().filter(e -> e.getPath().contains(longitude))
-                            .filter(e -> e.getPath().contains(latitude)).collect(Collectors.toList()).toArray(new File[0]);
-                }
-
-                photos = new ArrayList<String>(Arrays.asList(fList).stream().map(x -> x.getPath()).collect(Collectors.toList()));
+            photos = (ArrayList<String>) Arrays.asList(fList).stream().filter(e ->  startTimestamp == null || e.lastModified() >= startTimestamp.getTime())
+                    .filter(e -> endTimestamp == null || e.lastModified() <= endTimestamp.getTime())
+                    .filter(e -> keywords == null || e.getPath().contains(keywords))
+                    .filter(e -> longitude == null ||  e.getPath().contains(latitude))
+                    .filter(e -> latitude == null || e.getPath().contains(latitude)).map(x -> x.getPath()).collect(Collectors.toList());
 
             }
 
@@ -196,6 +187,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     }
 
     private File createImageFile() throws IOException {
+        btn_location.performClick();
         // Create an image file name
         DecimalFormat df = new DecimalFormat("#.###");
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -205,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
         mCurrentPhotoPath = image.getAbsolutePath();
+        Log.i(TAG,"Hello "+mCurrentPhotoPath);
         return image;
     }
 
