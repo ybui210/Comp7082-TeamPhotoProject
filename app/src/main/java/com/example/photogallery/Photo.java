@@ -5,14 +5,14 @@ import java.util.Date;
 public interface Photo {
     String getCaption();
     String getPath();
-    float getLongitude();
-    float getLatitude();
+    double getLongitude();
+    double getLatitude();
     Date getTimeStamp();
 
     void setCaption(String caption);
     void setTimeStamp(Date timeStamp);
-    void setLongitude(float longitude);
-    void setLatitude(float latitude);
+    void setLongitude(double longitude);
+    void setLatitude(double latitude);
 
     void Save();
 }
