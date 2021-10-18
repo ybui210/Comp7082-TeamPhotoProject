@@ -1,10 +1,8 @@
 package com.example.photogallery;
 
-import static android.content.ContentValues.TAG;
 
 import android.annotation.SuppressLint;
 import android.os.Environment;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -27,7 +25,6 @@ public class PhotoFactory {
     private static final int TIMESTAMP_INDEX = 2;
     private static final int LON_INDEX = 3;
     private static final int LAT_INDEX = 4;
-    private static final int MISSING_LATLON = 4;
 
 
     @SuppressLint("NewApi")

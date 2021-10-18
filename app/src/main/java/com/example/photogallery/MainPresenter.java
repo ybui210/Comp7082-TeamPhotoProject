@@ -12,7 +12,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -20,13 +19,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,7 +35,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class MainPresenter {
+public class MainPresenter implements LocationListener {
     MainActivity view;
 
     private PhotoFactory factory;
@@ -46,18 +44,12 @@ public class MainPresenter {
     private Photo currentPhoto = null;
     App properties = App.getInstance();
     LocationManager locationManager;
-    private FusedLocationProviderClient fusedLocationClient;
     public static boolean locationPermGranted = false;
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int SEARCH_ACTIVITY_REQUEST_CODE = 2;
-    private static final int CAPTION_INDEX = 1;
-    private static final int TIMESTAMP_INDEX = 2;
-    private static final int LON_INDEX = 3;
-    private static final int LAT_INDEX = 4;
     public static DateFormat displayFormat;
     private static DateFormat storedFormat;
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1252;
 
     public MainPresenter(PhotoFactory factory) {
         this.factory = factory;
@@ -72,7 +64,6 @@ public class MainPresenter {
     }
 
     public void ready() {
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(view);
         displayFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         storedFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
 
@@ -82,19 +73,13 @@ public class MainPresenter {
         } else {
             displayPhoto(photos.get(0));
         }
-        //if (ActivityCompat.checkSelfPermission(view, Manifest.permission.ACCESS_FINE_LOCATION)
-        //        != PackageManager.PERMISSION_GRANTED) {
-        //    ActivityCompat.requestPermissions(view, new String[]{
-        //            Manifest.permission.ACCESS_FINE_LOCATION
-        //    }, 100);
-        //}
-        if(ActivityCompat.checkSelfPermission(view, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if(Build.VERSION.SDK_INT >= 23) {
-                ActivityCompat.requestPermissions(view, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-            }
-        } else {
-            locationPermGranted = true;
+        if (ContextCompat.checkSelfPermission(view, Manifest.permission.ACCESS_FINE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(view, new String[]{
+                   Manifest.permission.ACCESS_FINE_LOCATION
+            }, 100);
         }
+        updateLocation();
     }
 
     public void locPermGranted() {
@@ -125,10 +110,6 @@ public class MainPresenter {
     }
 
     public void takePhotoResponse() {
-        double lon = tryGetFromViewId(R.id.longTextView);
-        double lat = tryGetFromViewId(R.id.latiTextView);
-        currentPhoto = updatePhoto(currentPhoto, "", lon, lat);
-
         photos = factory.findPhotos(null, null, null, 0, 0);
         displayPhoto(currentPhoto);
     }
@@ -156,21 +137,18 @@ public class MainPresenter {
         }
     }
 
-    private double tryGetFromViewId(int id) {
-        try {
-            Double coordDbl = Double.parseDouble(((EditText) view.findViewById(id)).getText().toString());
-            return coordDbl;
-        } catch (Exception e) {
-            return 0;
-        }
-    }
-
     private File createImageFile() throws IOException {
         // Create an image file name
         DecimalFormat df = new DecimalFormat("#.###");
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        setLocationFieldsAsync();
+        String timeStamp = storedFormat.format(new Date());
+        String longitude = df.format(properties.x);
+        String latitude = df.format(properties.y);
+        String imageFileName = "JPEG_" + timeStamp + "_" + longitude + "_" + latitude + "_";
+        Log.d(TAG, timeStamp);
+        Log.d(TAG, longitude);
+        Log.d(TAG, latitude);
+        Log.d(TAG, imageFileName);
+        //setLocationFieldsAsync();
         File storageDir = view.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
         //photo absolutepath
@@ -228,6 +206,7 @@ public class MainPresenter {
         Date startTimestamp, endTimestamp;
         double lon = response.getDoubleExtra("LONGITUDE",0);
         double lat = response.getDoubleExtra("LATITUDE", 0);
+        Log.d(TAG, String.valueOf(lon) + lat);
         String from = (String) response.getStringExtra("STARTTIMESTAMP");
         String to = (String) response.getStringExtra("ENDTIMESTAMP");
         try {
@@ -245,27 +224,23 @@ public class MainPresenter {
     }
 
     @SuppressLint("MissingPermission")
-    private void setLocationFieldsAsync() {
-        Log.d("Photo", "getting location");
-        final TextView longitudeText = (TextView) view.findViewById(R.id.longTextView);
-        final TextView latitudeText = (TextView) view.findViewById(R.id.latiTextView);
-        if (locationPermGranted) {
-            fusedLocationClient.getLastLocation()
-                    .addOnSuccessListener(view, new OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location location) {
-                            // Got last known location. In some rare situations this can be null.
-                            if (location != null) {
-                                Log.d("Photo", "location found");
-                                String longitude = Double.toString(location.getLongitude());
-                                String latitude = Double.toString(location.getLatitude());
-                                longitudeText.setText(longitude);
-                                latitudeText.setText(latitude);
-                            }
-                        }
-                    });
+    public void updateLocation() {
+        try {
+            locationManager = (LocationManager) view.getApplicationContext().getSystemService(LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 5, this);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        Log.d("Photo", "location complete");
+
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        properties.x = location.getLongitude();
+        properties.y = location.getLatitude();
+        Log.d(TAG, "onLocationChanged:" +properties.x);
+        Toast.makeText(view, "Location Updated!: " + properties.x + " " + properties.y, Toast.LENGTH_SHORT).show();
     }
 
 

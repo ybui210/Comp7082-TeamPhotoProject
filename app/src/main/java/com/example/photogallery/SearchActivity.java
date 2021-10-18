@@ -167,6 +167,8 @@ public class SearchActivity extends AppCompatActivity {
     }
     public void go(final View v) {
         Intent i = new Intent();
+        Double lon;
+        Double lat;
         EditText from = (EditText) findViewById(R.id.etFromDateTime);
         EditText to = (EditText) findViewById(R.id.etToDateTime);
         EditText keywords = (EditText) findViewById(R.id.etKeywords);
@@ -175,8 +177,10 @@ public class SearchActivity extends AppCompatActivity {
         i.putExtra("STARTTIMESTAMP", from.getText() != null ? from.getText().toString() : "");
         i.putExtra("ENDTIMESTAMP", to.getText() != null ? to.getText().toString() : "");
         i.putExtra("KEYWORDS", keywords.getText() != null ? keywords.getText().toString() : "");
-        i.putExtra("LONGITUDE", longitude.getText() != null ? longitude.getText().toString() : "");
-        i.putExtra("LATITUDE", latitude.getText() != null ? latitude.getText().toString() : "");
+        lon = longitude.getText() != null ? Double.valueOf(longitude.getText().toString()) : 0;
+        lat = latitude.getText() != null ? Double.valueOf(latitude.getText().toString()) : 0;
+        i.putExtra("LONGITUDE", lon);
+        i.putExtra("LATITUDE", lat);
         setResult(RESULT_OK, i);
         finish();
     }
