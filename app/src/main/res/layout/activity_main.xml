@@ -39,7 +39,7 @@
         android:layout_marginStart="3dp"
         android:layout_marginEnd="194dp"
         android:layout_marginBottom="178dp"
-        android:onClick="takePhoto"
+        android:onClick="onSnapClick"
         android:text="snap"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnNext"
@@ -55,7 +55,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginStart="194dp"
         android:layout_marginEnd="82dp"
-        android:onClick="scrollPhotos"
+        android:onClick="onScrollClick"
         android:text="next"
         app:layout_constraintBottom_toTopOf="@+id/btnSearch"
         app:layout_constraintEnd_toEndOf="parent"
@@ -70,7 +70,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="82dp"
         android:layout_marginBottom="15dp"
-        android:onClick="scrollPhotos"
+        android:onClick="onScrollClick"
         android:text="prev"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="622dp" />
@@ -84,7 +84,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="82dp"
         android:layout_marginBottom="100dp"
-        android:onClick="shareToSocialMedia"
+        android:onClick="onShareClick"
         />
 
     <TextView
@@ -140,7 +140,7 @@
         android:textStyle="bold"/>
 
 
-    <Button
+   <Button
         android:id="@+id/etLocation"
         android:layout_width="110dp"
         android:layout_height="60dp"
@@ -148,8 +148,8 @@
         android:layout_marginStart="3dp"
         android:layout_marginEnd="194dp"
         android:layout_marginBottom="98dp"
-        android:onClick="onClickLocation"
         android:text="Location"
+        android:onClick="onLocationClick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnNext"
         app:layout_constraintStart_toStartOf="parent"
