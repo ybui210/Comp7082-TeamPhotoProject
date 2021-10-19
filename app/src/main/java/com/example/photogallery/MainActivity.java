@@ -22,13 +22,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "-----------------------Oncreate");
+
         super.onCreate(savedInstanceState);
+        TestingObj testingObj = new TestingObj();
+        testingObj.help();
         setContentView(R.layout.activity_main);
+        testingObj.help();
 
         PhotoFactory factory = new PhotoFactory();
         presenter = new MainPresenter(factory);
         presenter.bind(this);
         presenter.ready();
+        testingObj.help();
     }
 
     @Override

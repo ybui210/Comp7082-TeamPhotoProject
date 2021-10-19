@@ -52,6 +52,8 @@ public class MainPresenter implements LocationListener {
     private static DateFormat storedFormat;
 
     public MainPresenter(PhotoFactory factory) {
+        TestingObj testingObj = new TestingObj();
+        testingObj.help();
         this.factory = factory;
     }
 
