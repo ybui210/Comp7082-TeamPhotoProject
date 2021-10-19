@@ -52,6 +52,8 @@ public class MainPresenter implements LocationListener {
     private static DateFormat storedFormat;
 
     public MainPresenter(PhotoFactory factory) {
+        TestingObj testingObj = new TestingObj();
+        testingObj.help();
         this.factory = factory;
     }
 
@@ -74,9 +76,9 @@ public class MainPresenter implements LocationListener {
             displayPhoto(photos.get(0));
         }
         if (ContextCompat.checkSelfPermission(view, Manifest.permission.ACCESS_FINE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED) {
+                != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(view, new String[]{
-                   Manifest.permission.ACCESS_FINE_LOCATION
+                    Manifest.permission.ACCESS_FINE_LOCATION
             }, 100);
         }
         updateLocation();

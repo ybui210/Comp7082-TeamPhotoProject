@@ -15,20 +15,25 @@ public class MainActivity extends AppCompatActivity {
     static final int SEARCH_ACTIVITY_REQUEST_CODE = 2;
     public static MainPresenter presenter;
 
-//    private FusedLocationProviderClient fusedLocationClient;
+    //    private FusedLocationProviderClient fusedLocationClient;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1252;
     public static boolean locationPermGranted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "-----------------------Oncreate");
+
         super.onCreate(savedInstanceState);
+        TestingObj testingObj = new TestingObj();
+        testingObj.help();
         setContentView(R.layout.activity_main);
+        testingObj.help();
 
         PhotoFactory factory = new PhotoFactory();
         presenter = new MainPresenter(factory);
         presenter.bind(this);
         presenter.ready();
+        testingObj.help();
     }
 
     @Override
